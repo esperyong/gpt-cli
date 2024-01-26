@@ -130,7 +130,7 @@ class ChatSession:
 
     def _save(self):
         if len(self.messages) > 0:
-            topic = self.messages[0]["content"]
+            topic = str(self.session_id)
             conversation = Conversation(topic=topic, messages=self.messages, id=int(self.session_id))
             serializer = ConversationSerializer(conversation)
             config = GptCliConfig()
