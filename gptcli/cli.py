@@ -140,7 +140,8 @@ class CLIFileHistory(FileHistory):
 
 
 class CLIUserInputProvider(UserInputProvider):
-    def __init__(self, history_filename) -> None:
+    def __init__(self, history_filename, assistant) -> None:
+        self.assistant = assistant
         self.prompt_session = PromptSession[str](
             history=CLIFileHistory(history_filename)
         )
@@ -190,7 +191,7 @@ class CLIUserInputProvider(UserInputProvider):
 
         try:
             return self.prompt_session.prompt(
-                "> " if not multiline else "multiline> ",
+                f"{self.assistant.config['model']}> " if not multiline else f"{self.assistant.config['model']} multiline> ",
                 vi_mode=True,
                 multiline=multiline,
                 enable_open_in_editor=True,

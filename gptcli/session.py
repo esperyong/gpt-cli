@@ -14,8 +14,18 @@ from gptcli.renderer import render
 from gptcli.serializer import Conversation, ConversationSerializer
 
 
+# TODO
+#  1. 支持在对话过程中切换模型命令:chgm gpt-4
+#  1. 支持当前模型查看命令:showm
+#  2. 支持dall-e图片生成到本地并链接到md的链接
+#  3. 支持多模态
+#  5. 增加load已有回话内容到session中,:l 23445, 显示当前最新的三个回话id, :ls
+#  6. 修改配置json来修改默认的cli，比如默认使用的model(已经有了)
+#  7. 在>的前面打印出当前模型的名字
+
 def render_jsons():
     config = GptCliConfig()
+    config.assistants
 
     # 使用glob模块的glob函数，获取指定文件夹下的所有.json文件
     for filename in glob.glob(os.path.join(config.conversations_save_directory, '*.json')):
@@ -91,7 +101,8 @@ COMMAND_QUIT = (":quit", ":q")
 COMMAND_RERUN = (":rerun", ":r")
 COMMAND_HELP = (":help", ":h", ":?")
 COMMAND_SAVE = (":save", ":s")
-ALL_COMMANDS = [*COMMAND_CLEAR, *COMMAND_QUIT, *COMMAND_RERUN, *COMMAND_HELP, *COMMAND_SAVE]
+COMMAND_CHANGE = (":change", ":chg")
+ALL_COMMANDS = [*COMMAND_CLEAR, *COMMAND_QUIT, *COMMAND_RERUN, *COMMAND_HELP, *COMMAND_SAVE, *COMMAND_CHANGE]
 COMMANDS_HELP = """
 Commands:
 - `:clear` / `:c` / Ctrl+C - Clear the conversation.
@@ -99,6 +110,7 @@ Commands:
 - `:rerun` / `:r` / Ctrl+R - Re-run the last message.
 - `:help` / `:h` / `:?` - Show this help message.
 - `:save` / `:s` / Ctrl+S - Save the conversation.
+- `:change` / `:chg` - Change the model.
 """
 
 
@@ -225,6 +237,12 @@ class ChatSession:
             return True
         elif user_input in COMMAND_SAVE:
             self._save()
+            return True
+        elif user_input.startswith(COMMAND_CHANGE):
+            user_inputs = user_input.split(" ")
+            if len(user_inputs) == 2:
+                model = user_inputs[1].strip()
+                self.assistant.config["model"] = model
             return True
         elif user_input in COMMAND_HELP:
             self._print_help()

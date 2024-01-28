@@ -241,7 +241,7 @@ def run_interactive(args, assistant):
     )
     history_filename = os.path.expanduser("~/.config/gpt-cli/history")
     os.makedirs(os.path.dirname(history_filename), exist_ok=True)
-    input_provider = CLIUserInputProvider(history_filename=history_filename)
+    input_provider = CLIUserInputProvider(history_filename=history_filename, assistant=assistant)
     session.loop(input_provider)
 
 
