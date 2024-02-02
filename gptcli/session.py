@@ -15,13 +15,10 @@ from gptcli.serializer import Conversation, ConversationSerializer
 
 
 # TODO
-#  1. 支持在对话过程中切换模型命令:chgm gpt-4
-#  1. 支持当前模型查看命令:showm
+#  1. 支持在对话过程中切换模型命令:chg gpt-4 OK
 #  2. 支持dall-e图片生成到本地并链接到md的链接
 #  3. 支持多模态
 #  5. 增加load已有回话内容到session中,:l 23445, 显示当前最新的三个回话id, :ls
-#  6. 修改配置json来修改默认的cli，比如默认使用的model(已经有了)
-#  7. 在>的前面打印出当前模型的名字
 
 def render_jsons():
     config = GptCliConfig()
