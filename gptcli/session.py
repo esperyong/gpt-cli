@@ -18,6 +18,7 @@ def render_jsons():
     config = GptCliConfig()
 
     # 使用glob模块的glob函数，获取指定文件夹下的所有.json文件
+    os.makedirs(config.conversations_render_directory, exist_ok=True)
     for filename in glob.glob(os.path.join(config.conversations_save_directory, '*.json')):
         # 使用os模块的splitext函数，分离文件名和扩展名
         serializer = ConversationSerializer(None)
